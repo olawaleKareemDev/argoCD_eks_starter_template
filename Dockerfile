@@ -2,6 +2,6 @@ FROM node:alpine
 WORKDIR /app
 COPY  package.json .
 COPY  . .
-RUN npm install --production
+RUN npm install 
 EXPOSE 3000
-ENTRYPOINT [ "npm start" ]
+CMD [ "npm", "start" ]
