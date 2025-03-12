@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-app-argocd
+  namespace: argocd
+spec:
+  destination:
+    namespace: node-app
+    server: "https://kubernetes.default.svc"
+  source:
+    path: manifests
+    repoURL: "https://github.com/olawaleKareemDev/argoCD_eks_starter_template"
+    targetRevision: circleci-project-setup
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
