@@ -8,12 +8,13 @@ orbs:
 jobs:
 
   build-and-push:
-    executor: docker-executor
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
 
-      - setup_remote_docker:
-          version: 20.10.7
+      # - setup_remote_docker:
+      #     version: 20.10.7
 
       - run:
           name: Install AWS CLI
