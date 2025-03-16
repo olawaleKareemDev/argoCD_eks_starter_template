@@ -28,8 +28,8 @@ jobs:
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set region $AWS_REGION
-            # aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin  $ECR_REGISTRY
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 908027386559.dkr.ecr.us-east-1.amazonaws.com
+            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin  $ECR_REGISTRY
+            # aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 908027386559.dkr.ecr.us-east-1.amazonaws.com
       - run:
           name: Build and tag Docker image
           command: |
@@ -131,6 +131,7 @@ workflows:
       - build-and-push:
           context:
             - aws-context-retrunbuild
+            - node-app-context
       - bump-docker-tag-kustomize:
           requires:
             - build-and-push
