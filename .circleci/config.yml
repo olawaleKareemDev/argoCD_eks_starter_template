@@ -13,9 +13,6 @@ jobs:
     steps:
       - checkout
 
-      # - setup_remote_docker:
-      #     version: 20.10.7
-
       - run:
           name: Install AWS CLI
           command: |
@@ -33,12 +30,14 @@ jobs:
       - run:
           name: Build and tag Docker image
           command: |
+            IMAGE_TAG=latest 
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$CIRCLE_SHA1
 
       - run:
           name: Push Docker image to ECR
-          command: |
+          command: 
+            IMAGE_TAG=latest 
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$CIRCLE_SHA1
 
@@ -150,3 +149,5 @@ workflows:
             - argocd-configure
           context:
             - node-app-context
+
+
