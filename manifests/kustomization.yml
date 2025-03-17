@@ -1,11 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - deployment.yml
-  - service.yml
-  - namespace.yml
+- deployment.yml
+- service.yml
+- namespace.yml
 namespace: node-app
 images:
-  - name: node-app
-    newName: node-app
-    newTag: v1
+- newName: /
+  newTag: 0677b2a9d12e7ad84c282b14e46ba8902eb538b5
+- name: node-app
+  newName: node-app
+  newTag: v1
