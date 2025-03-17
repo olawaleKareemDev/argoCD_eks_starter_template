@@ -150,6 +150,7 @@ workflows:
           requires:
             - bump-docker-tag-kustomize
           context:
+            - aws-context-retrunbuild
             - node-app-context
       ## Paste the following only when you opt for the ArgoCD manual-sync-policy:
       - argocd-manual-sync:
