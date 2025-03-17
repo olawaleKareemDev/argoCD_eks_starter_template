@@ -152,7 +152,7 @@ workflows:
           context:
             - aws-context-retrunbuild
             - node-app-context
-      ## Paste the following only when you opt for the ArgoCD manual-sync-policy:
+      ### Paste the following only when you opt for the ArgoCD manual-sync-policy:
       - argocd-manual-sync:
           server: $ARGOCD_SERVER
           username: $ARGOCD_USERNAME
