@@ -7,7 +7,7 @@ resources:
 namespace: node-app
 images:
 - newName: /
-  newTag: 05a0efb3fdf6d2b8d80a876840220a66fac7ec9a
+  newTag: 17fa8c18d8216ee903c1949ddd71f5499c9a13bc
 - name: node-app
   newName: node-app
   newTag: v1
