@@ -70,11 +70,9 @@ jobs:
       - run:
           name: Commit & Push to GitHub
           command: |
-            ls
             git config user.email "$GITHUB_EMAIL"
             git config user.name "CircleCI User"
             git checkout $CIRCLE_BRANCH           
-            # git add manifests/kustomization.yaml
             git add .
             git commit -am "Bumps docker tag: $CIRCLE_SHA1"
             git push origin $CIRCLE_BRANCH
@@ -92,7 +90,6 @@ jobs:
       - run:
           name: Pull Updated code from repo
           command: |
-            cat $CLUSTER_NAME
             git pull origin $CIRCLE_BRANCH
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
