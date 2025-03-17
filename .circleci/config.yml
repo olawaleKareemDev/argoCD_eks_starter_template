@@ -46,6 +46,39 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$CIRCLE_SHA1
 
+  bump-docker-tag-kustomize:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Install kustomize
+          command: |
+            URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.5.2/kustomize_v4.5.2_linux_amd64.tar.gz
+            curl -L $URL | tar zx
+            [ -w /usr/local/bin ] && SUDO="" || SUDO=sudo
+            $SUDO chmod +x ./kustomize
+            $SUDO mv ./kustomize /usr/local/bin
+      - checkout
+      - run:
+          name: Bump Docker Tag
+          command: |
+            cd manifests
+            kustomize edit set image $APP_NAME=$ECR_REGISTRY/$ECR_REPOSITORY:$CIRCLE_SHA1
+      - add_ssh_keys:
+          fingerprints:
+            - "$SSH_FINGERPRINT"
+      - run:
+          name: Commit & Push to GitHub
+          command: |
+            ll
+            git config user.email "$GITHUB_EMAIL"
+            git config user.name "CircleCI User"
+            git checkout $CIRCLE_BRANCH           
+            # git add manifests/kustomization.yaml
+            git add .
+            git commit -am "Bumps docker tag: $CIRCLE_SHA1"
+            git push origin $CIRCLE_BRANCH
+
   argocd-manual-sync:
     docker:
       - image: cimg/base:stable
@@ -98,36 +131,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           resource-file-path: argocd/config.yaml
 
-  bump-docker-tag-kustomize:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run:
-          name: Install kustomize
-          command: |
-            URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v4.5.2/kustomize_v4.5.2_linux_amd64.tar.gz
-            curl -L $URL | tar zx
-            [ -w /usr/local/bin ] && SUDO="" || SUDO=sudo
-            $SUDO chmod +x ./kustomize
-            $SUDO mv ./kustomize /usr/local/bin
-      - checkout
-      - run:
-          name: Bump Docker Tag
-          command: |
-            cd manifests
-            kustomize edit set image $APP_NAME=$ECR_REGISTRY/$ECR_REPOSITORY:$CIRCLE_SHA1
-      - add_ssh_keys:
-          fingerprints:
-            - "$SSH_FINGERPRINT"
-      - run:
-          name: Commit & Push to GitHub
-          command: |
-            git config user.email "$GITHUB_EMAIL"
-            git config user.name "CircleCI User"
-            git checkout $CIRCLE_BRANCH           
-            git add manifests/kustomization.yaml
-            git commit -am "Bumps docker tag [skip ci]"
-            git push origin $CIRCLE_BRANCH
+
 
 workflows:
   Deploy-App-on-EKS:
