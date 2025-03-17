@@ -79,6 +79,26 @@ jobs:
             git commit -am "Bumps docker tag: $CIRCLE_SHA1"
             git push origin $CIRCLE_BRANCH
 
+  argocd-configure:
+    docker:
+      - image: cimg/python:3.10
+    parameters:
+      cluster-name:
+        description: |
+          Name of the EKS cluster
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Pull Updated code from repo
+          command: |
+            cat $CLUSTER_NAME
+            git pull origin $CIRCLE_BRANCH
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
+      - kubernetes/create-or-update-resource:
+          resource-file-path: argocd/config.yaml
+
   argocd-manual-sync:
     docker:
       - image: cimg/base:stable
@@ -112,24 +132,6 @@ jobs:
       - run:
           name: Wait for application to reach a synced and healthy state
           command: argocd app wait $APP_NAME
-
-  argocd-configure:
-    docker:
-      - image: cimg/python:3.10
-    parameters:
-      cluster-name:
-        description: |
-          Name of the EKS cluster
-        type: string
-    steps:
-      - checkout
-      - run:
-          name: Pull Updated code from repo
-          command: git pull origin $CIRCLE_BRANCH
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: << parameters.cluster-name >>
-      - kubernetes/create-or-update-resource:
-          resource-file-path: argocd/config.yaml
 
 
 
