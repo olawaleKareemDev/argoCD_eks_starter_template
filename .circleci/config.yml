@@ -95,10 +95,12 @@ jobs:
           name: Pull Updated code from repo
           command: |
             git pull origin $CIRCLE_BRANCH
-            # aws eks update-kubeconfig --region <region> --name <cluster-name>
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
           aws-region: << parameters.aws-region >>
+
+      - kubernetes/install:
+          kubectl-version: v1.22.0
 
       - kubernetes/create-or-update-resource:
           resource-file-path: argocd/config.yaml
@@ -153,7 +155,8 @@ workflows:
           cluster-name: $CLUSTER_NAME
           aws-region: $AWS_REGION
           requires:
-            - bump-docker-tag-kustomize
+            - build-and-push
+            - bump-docker-tag-kustomize                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
           context:
             - aws-context-retrunbuild
             - node-app-context
