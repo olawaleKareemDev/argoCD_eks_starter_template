@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: node-app-argocd
-          image: node-app-argocd
+          image: 908027386559.dkr.ecr.us-east-1.amazonaws.com/node-app:latest
           ports:
             - name: node-app-3000
               containerPort: 3000
