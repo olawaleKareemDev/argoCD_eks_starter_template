@@ -10,7 +10,7 @@ spec:
   source:
     path: manifests
     repoURL: "https://github.com/olawaleKareemDev/argoCD_eks_starter_template"
-    targetRevision: circleci-project-setup
+    targetRevision: main
   project: default
   syncPolicy:
     automated:
