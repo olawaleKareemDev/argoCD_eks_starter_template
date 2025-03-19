@@ -112,10 +112,10 @@ jobs:
     docker:
       - image: cimg/base:stable
     parameters:
-      server:
-        description: |
-          Server IP of of ArgoCD
-        type: string
+      # server:
+      #   description: |
+      #     Server IP of of ArgoCD
+      #   type: string
       username:
         description: |
           Username for ArgoCD
@@ -128,10 +128,15 @@ jobs:
       - run:
           name: Install ArgoCD CLI
           command: |
-            URL=https://<< parameters.server >>/download/argocd-linux-amd64
-            [ -w /usr/local/bin ] && SUDO="" || SUDO=sudo
-            $SUDO curl --insecure -sSL -o /usr/local/bin/argocd $URL
-            $SUDO chmod +x /usr/local/bin/argocd
+            # URL=https://<< parameters.server >>/download/argocd-linux-amd64
+            # [ -w /usr/local/bin ] && SUDO="" || SUDO=sudo
+            # $SUDO curl --insecure -sSL -o /usr/local/bin/argocd $URL
+            # $SUDO chmod +x /usr/local/bin/argocd
+            ARGOCD_VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+            curl -sSL -o /tmp/argocd-${ARGOCD_VERSION} https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64
+            chmod +x /tmp/argocd-${VERSION}
+            sudo mv /tmp/argocd-${VERSION} /usr/local/bin/argocd 
+
       - run:
           name: ArgoCD CLI login
           command: argocd login << parameters.server >> --insecure --username << parameters.username >> --password << parameters.password >>
@@ -165,7 +170,7 @@ workflows:
             - node-app-context
       ### Paste the following only when you opt for the ArgoCD manual-sync-policy:
       - argocd-manual-sync:
-          server: $ARGOCD_SERVER
+          # server: $ARGOCD_SERVER
           username: $ARGOCD_USERNAME
           password: $ARGOCD_PASSWORD
           requires:
