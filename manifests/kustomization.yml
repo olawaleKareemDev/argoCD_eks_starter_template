@@ -4,6 +4,6 @@ resources:
 - deployment.yml
 namespace: node-app
 images:
-- name: node-app
-  newName: 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app-repo
+- name: 908027386559.dkr.ecr.us-east-1.amazonaws.com/node-app
+  newName: 908027386559.dkr.ecr.us-east-1.amazonaws.com/node-app
   newTag: 56bbf64a48bb3c7167f7841ed7a44dbc0341a2c8
