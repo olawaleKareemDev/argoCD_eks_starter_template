@@ -14,10 +14,10 @@ spec:
     metadata:
       labels:
         app: node-app
-  spec:
-    containers:
-      - name: node-app-argocd
-        image: node-app-argocd
-        ports:
-          - name: node-app-3000
-            containerPort: 3000
+    spec:
+      containers:
+        - name: node-app-argocd
+          image: node-app-argocd
+          ports:
+            - name: node-app-3000
+              containerPort: 3000
