@@ -4,14 +4,6 @@ resources:
 - deployment.yml
 namespace: node-app
 images:
-<<<<<<< HEAD
-- name: node-app-argocd
+- name: node-app
   newName: 123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app-repo
   newTag: 56bbf64a48bb3c7167f7841ed7a44dbc0341a2c8
-=======
-- newName: /
-  newTag: 2cc6839a1b81900bebc27a2a6d7f4f51cc5e1829
-- name: node-app
-  newName: node-app
-  newTag: v1
->>>>>>> 31bcb1feb0e7e21edc2e28e71278b5d0d7aed245
