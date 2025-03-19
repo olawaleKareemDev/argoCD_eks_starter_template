@@ -5,7 +5,7 @@ metadata:
   labels:
     app: node-app
 spec:
-  type: Loadbalancer
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 3000
